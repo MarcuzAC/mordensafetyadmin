@@ -1,23 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-
-// Use the exact URL from the working API test
-const API_URL = 'https://mordensafe.onrender.com';
+import { Shield, LogIn } from 'lucide-react';
 
 const Login = ({ onLogin }) => {
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  
   const [formData, setFormData] = useState({
-    email: 'admin@firesafety.mw',
-    password: 'admin123'
+    email: '',
+    password: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [debugInfo, setDebugInfo] = useState('');
-
-  useEffect(() => {
-    console.log('Login component mounted');
-    console.log('API_URL:', API_URL);
-    console.log('onLogin callback:', typeof onLogin);
-  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -31,16 +24,8 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    setDebugInfo('Starting login...');
-
-    console.log('=== LOGIN START ===');
-    console.log('Email:', formData.email);
-    console.log('Password length:', formData.password.length);
 
     try {
-      setDebugInfo('Making request to: ' + `${API_URL}/api/auth/login`);
-      
-      // Use the EXACT configuration from the working curl command
       const response = await axios.post(
         `${API_URL}/api/auth/login`,
         formData,
@@ -52,114 +37,32 @@ const Login = ({ onLogin }) => {
         }
       );
 
-      console.log('=== RESPONSE RECEIVED ===');
-      console.log('Status:', response.status);
-      console.log('Response data:', response.data);
-      
-      setDebugInfo(`Response received: ${response.status}`);
-
       if (response.data.access_token) {
-        console.log('✅ Token received:', response.data.access_token.substring(0, 20) + '...');
-        console.log('✅ User data:', response.data.user);
-        
-        // Store in localStorage
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         
-        console.log('✅ localStorage token set:', localStorage.getItem('token') ? 'YES' : 'NO');
-        console.log('✅ localStorage user set:', localStorage.getItem('user') ? 'YES' : 'NO');
-        
-        setDebugInfo('Login successful! Token stored.');
-        
-        // Call the onLogin callback
         if (onLogin && typeof onLogin === 'function') {
-          console.log('✅ Calling onLogin callback with user:', response.data.user);
           onLogin(response.data.user);
-        } else {
-          console.error('❌ onLogin is not a function:', onLogin);
-          setDebugInfo(prev => prev + '\nWarning: onLogin callback issue');
         }
-        
       } else {
-        console.error('❌ No access_token in response');
         setError('Invalid response from server');
-        setDebugInfo('No access_token in response');
       }
       
     } catch (err) {
-      console.error('=== ERROR ===');
-      console.error('Error object:', err);
-      
       if (err.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Response data:', err.response.data);
-        console.error('Response status:', err.response.status);
-        console.error('Response headers:', err.response.headers);
-        
-        setDebugInfo(`Error ${err.response.status}: ${JSON.stringify(err.response.data)}`);
-        
         if (err.response.status === 401 || err.response.status === 400) {
           setError('Invalid email or password');
         } else {
           setError(`Server error: ${err.response.status}`);
         }
       } else if (err.request) {
-        // The request was made but no response was received
-        console.error('No response received:', err.request);
-        setDebugInfo('No response from server');
         setError('Cannot connect to server. Check your internet connection.');
       } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Request setup error:', err.message);
-        setDebugInfo('Request error: ' + err.message);
-        setError('Error: ' + err.message);
+        setError('An error occurred. Please try again.');
       }
-      
-      // Also log the full error for debugging
-      console.error('Full error:', err.toJSON ? err.toJSON() : err);
-      
     } finally {
       setLoading(false);
-      console.log('=== LOGIN END ===');
-      console.log('Loading:', loading);
-      console.log('Error:', error);
-      console.log('---');
     }
-  };
-
-  // Test function to verify API is working
-  const testApiDirectly = async () => {
-    console.log('=== TESTING API DIRECTLY ===');
-    try {
-      // Test with exact curl command format
-      const response = await axios.post(
-        `${API_URL}/api/auth/login`,
-        {
-          email: 'admin@firesafety.mw',
-          password: 'admin123'
-        },
-        {
-          headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      console.log('✅ Direct test successful!');
-      console.log('Response:', response.data);
-      alert(`✅ API Test Successful!\nToken: ${response.data.access_token.substring(0, 20)}...`);
-    } catch (err) {
-      console.error('❌ Direct test failed:', err);
-      alert('❌ API Test Failed: ' + err.message);
-    }
-  };
-
-  // Clear localStorage for testing
-  const clearStorage = () => {
-    localStorage.clear();
-    console.log('LocalStorage cleared');
-    setDebugInfo('LocalStorage cleared');
   };
 
   return (
@@ -170,58 +73,70 @@ const Login = ({ onLogin }) => {
       justifyContent: 'center',
       background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
       fontFamily: "'Poppins', sans-serif",
-      color: '#fff',
       padding: '20px'
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '500px',
+        maxWidth: '400px',
+        background: 'rgba(255, 255, 255, 0.95)',
+        borderRadius: '16px',
+        padding: '40px 30px',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
         textAlign: 'center'
       }}>
         {/* Logo & Title */}
         <div style={{ marginBottom: '30px' }}>
           <div style={{
-            width: '70px',
-            height: '70px',
+            width: '60px',
+            height: '60px',
             margin: '0 auto 15px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.15)',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontWeight: '700',
-            fontSize: '26px',
             color: 'white',
-            boxShadow: '0 0 15px rgba(255,255,255,0.1)',
-          }}>MS</div>
-          <h1 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '6px' }}>Modern Safety</h1>
-          <p style={{ fontSize: '15px', opacity: '0.9' }}>Admin Dashboard</p>
+            boxShadow: '0 4px 12px rgba(30, 60, 114, 0.4)',
+          }}>
+            <Shield size={28} />
+          </div>
+          <h1 style={{ 
+            fontSize: '24px', 
+            fontWeight: '700', 
+            marginBottom: '6px',
+            color: '#1e3c72'
+          }}>Morden Safety</h1>
+          <p style={{ 
+            fontSize: '14px', 
+            color: '#666',
+            marginBottom: '30px'
+          }}>Admin Dashboard Login</p>
         </div>
 
-        
-
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
+        <form onSubmit={handleSubmit}>
           {error && (
             <div style={{
-              background: 'rgba(255, 0, 0, 0.15)',
-              color: '#ffbaba',
+              background: '#fee',
+              color: '#c33',
               padding: '12px',
-              borderRadius: '6px',
+              borderRadius: '8px',
               marginBottom: '20px',
-              textAlign: 'center',
-              fontSize: '14px'
-            }}>{error}</div>
+              fontSize: '14px',
+              border: '1px solid #fcc'
+            }}>
+              {error}
+            </div>
           )}
 
-          <div style={{ marginBottom: '25px' }}>
+          <div style={{ marginBottom: '20px', textAlign: 'left' }}>
             <label htmlFor="email" style={{
               display: 'block',
-              fontWeight: '500',
+              fontWeight: '600',
               fontSize: '14px',
-              marginBottom: '6px',
-              color: 'rgba(255,255,255,0.85)'
-            }}></label>
+              marginBottom: '8px',
+              color: '#333'
+            }}>Email Address</label>
             <input
               type="email"
               id="email"
@@ -229,30 +144,31 @@ const Login = ({ onLogin }) => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Enter your email"
+              placeholder="admin@firesafety.mw"
               style={{
                 width: '100%',
-                background: 'transparent',
-                border: 'none',
-                borderBottom: '2px solid rgba(255,255,255,0.3)',
-                padding: '10px 4px',
-                color: '#fff',
+                background: '#fff',
+                border: '2px solid #e1e5e9',
+                padding: '12px 16px',
+                color: '#333',
                 fontSize: '15px',
+                borderRadius: '8px',
                 outline: 'none',
-                transition: 'border-color 0.3s ease'
+                transition: 'all 0.3s ease',
+                boxSizing: 'border-box'
               }}
-              onFocus={(e) => e.target.style.borderBottom = '2px solid #fff'}
-              onBlur={(e) => e.target.style.borderBottom = '2px solid rgba(255,255,255,0.3)'}
+              onFocus={(e) => e.target.style.borderColor = '#1e3c72'}
+              onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
             />
           </div>
 
-          <div style={{ marginBottom: '25px' }}>
+          <div style={{ marginBottom: '25px', textAlign: 'left' }}>
             <label htmlFor="password" style={{
               display: 'block',
-              fontWeight: '500',
+              fontWeight: '600',
               fontSize: '14px',
-              marginBottom: '6px',
-              color: 'rgba(255,255,255,0.85)'
+              marginBottom: '8px',
+              color: '#333'
             }}>Password</label>
             <input
               type="password"
@@ -264,17 +180,18 @@ const Login = ({ onLogin }) => {
               placeholder="Enter your password"
               style={{
                 width: '100%',
-                background: 'transparent',
-                border: 'none',
-                borderBottom: '2px solid rgba(255,255,255,0.3)',
-                padding: '10px 4px',
-                color: '#fff',
+                background: '#fff',
+                border: '2px solid #e1e5e9',
+                padding: '12px 16px',
+                color: '#333',
                 fontSize: '15px',
+                borderRadius: '8px',
                 outline: 'none',
-                transition: 'border-color 0.3s ease'
+                transition: 'all 0.3s ease',
+                boxSizing: 'border-box'
               }}
-              onFocus={(e) => e.target.style.borderBottom = '2px solid #fff'}
-              onBlur={(e) => e.target.style.borderBottom = '2px solid rgba(255,255,255,0.3)'}
+              onFocus={(e) => e.target.style.borderColor = '#1e3c72'}
+              onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
             />
           </div>
 
@@ -283,36 +200,98 @@ const Login = ({ onLogin }) => {
             disabled={loading}
             style={{
               width: '100%',
-              background: '#fff',
-              color: '#1e3c72',
+              background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+              color: 'white',
               border: 'none',
               padding: '14px',
-              borderRadius: '50px',
+              borderRadius: '8px',
               fontSize: '16px',
               fontWeight: '600',
               cursor: loading ? 'not-allowed' : 'pointer',
               transition: 'all 0.3s ease',
               opacity: loading ? 0.7 : 1,
-              boxShadow: '0 4px 15px rgba(255,255,255,0.3)',
-              marginBottom: '10px'
+              boxShadow: '0 4px 12px rgba(30, 60, 114, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px'
             }}
             onMouseOver={(e) => !loading && (e.target.style.transform = 'translateY(-2px)')}
             onMouseOut={(e) => !loading && (e.target.style.transform = 'translateY(0)')}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? (
+              <>
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  border: '2px solid rgba(255,255,255,0.3)',
+                  borderTop: '2px solid white',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }} />
+                Signing in...
+              </>
+            ) : (
+              <>
+                <LogIn size={20} />
+                Sign In
+              </>
+            )}
           </button>
         </form>
 
+        {/* Demo Credentials */}
         <div style={{
-          fontSize: '13px',
-          color: 'rgba(255,255,255,0.85)',
-          background: 'rgba(255,255,255,0.1)',
+          marginTop: '25px',
           padding: '15px',
-          borderRadius: '8px'
+          background: '#f8f9fa',
+          borderRadius: '8px',
+          border: '1px solid #e1e5e9',
+          fontSize: '13px',
+          color: '#666'
         }}>
-          
+          <div style={{ fontWeight: '600', marginBottom: '5px' }}>
+            Demo Credentials:
+          </div>
+          <div style={{ marginBottom: '3px' }}>
+            <strong>Email:</strong> admin@firesafety.mw
+          </div>
+          <div>
+            <strong>Password:</strong> admin123
+          </div>
         </div>
+
+        {/* Environment Info (Optional - remove in production) */}
+        {process.env.NODE_ENV !== 'production' && (
+          <div style={{
+            marginTop: '15px',
+            fontSize: '11px',
+            color: '#999',
+            padding: '8px',
+            background: '#f0f0f0',
+            borderRadius: '4px'
+          }}>
+            API: {API_URL}
+          </div>
+        )}
       </div>
+
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          
+          input::placeholder {
+            color: #999;
+          }
+          
+          button:disabled {
+            cursor: not-allowed;
+          }
+        `}
+      </style>
     </div>
   );
 };
