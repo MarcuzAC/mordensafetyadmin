@@ -240,27 +240,6 @@ const Login = ({ onLogin }) => {
           </button>
         </form>
 
-        {/* Demo Credentials */}
-        <div style={{
-          marginTop: '25px',
-          padding: '15px',
-          background: '#f8f9fa',
-          borderRadius: '8px',
-          border: '1px solid #e1e5e9',
-          fontSize: '13px',
-          color: '#666'
-        }}>
-          <div style={{ fontWeight: '600', marginBottom: '5px' }}>
-            Demo Credentials:
-          </div>
-          <div style={{ marginBottom: '3px' }}>
-            <strong>Email:</strong> admin@firesafety.mw
-          </div>
-          <div>
-            <strong>Password:</strong> admin123
-          </div>
-        </div>
-
         {/* Environment Info (Optional - remove in production) */}
         {process.env.NODE_ENV !== 'production' && (
           <div style={{
