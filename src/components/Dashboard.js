@@ -6,6 +6,8 @@ import ServiceRequests from './ServiceRequests';
 import Products from './Products';
 import Users from './Users';
 import Notifications from './Notifications';
+import Orders from './Orders'; // Import the new Orders component
+import Revenue from './Revenue'; // Import the new Revenue component
 
 const Dashboard = ({ user, onLogout }) => {
   const location = useLocation();
@@ -13,10 +15,13 @@ const Dashboard = ({ user, onLogout }) => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // Updated menu items to include Orders and Revenue
   const menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/dashboard/requests', label: 'Service Requests', icon: '🔧' },
-    { path: '/dashboard/products', label: 'Products', icon: '📦' },
+    { path: '/dashboard/orders', label: 'Orders', icon: '📦' }, // New menu item
+    { path: '/dashboard/products', label: 'Products', icon: '🛍️' },
+    { path: '/dashboard/revenue', label: 'Revenue & Expenses', icon: '💰' }, // New menu item
     { path: '/dashboard/users', label: 'Users', icon: '👥' },
     { path: '/dashboard/notifications', label: 'Notifications', icon: '🔔' },
   ];
@@ -199,6 +204,21 @@ const Dashboard = ({ user, onLogout }) => {
                   {unreadCount}
                 </span>
               )}
+              {/* Show notification badge for Orders if there are pending orders */}
+              {item.label === 'Orders' && stats?.counts?.pending_orders > 0 && (
+                <span
+                  style={{
+                    background: '#f59e0b',
+                    borderRadius: '10px',
+                    padding: '2px 7px',
+                    fontSize: '11px',
+                    fontWeight: '600',
+                    marginLeft: 'auto',
+                  }}
+                >
+                  {stats.counts.pending_orders}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -335,25 +355,73 @@ const Dashboard = ({ user, onLogout }) => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: '#f8fafc',
-              padding: '8px 14px',
-              borderRadius: '8px',
-              border: '1px solid #e2e8f0',
-              color: '#64748b',
-              fontWeight: '500',
-              fontSize: '14px',
-              gap: '8px',
+              gap: '12px',
             }}
           >
+            {/* Quick Stats Badges */}
+            {stats && location.pathname === '/dashboard' && (
+              <>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: '#f0f9ff',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #bae6fd',
+                    color: '#0369a1',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    gap: '6px',
+                  }}
+                >
+                  <span style={{ fontSize: '16px' }}>📦</span>
+                  <span>{stats.counts?.pending_orders || 0} Pending Orders</span>
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: '#fef2f2',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #fecaca',
+                    color: '#dc2626',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    gap: '6px',
+                  }}
+                >
+                  <span style={{ fontSize: '16px' }}>🔧</span>
+                  <span>{stats.counts?.pending_requests || 0} Pending Requests</span>
+                </div>
+              </>
+            )}
+
             <div
               style={{
-                width: '8px',
-                height: '8px',
-                background: '#10b981',
-                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                background: '#f8fafc',
+                padding: '8px 14px',
+                borderRadius: '8px',
+                border: '1px solid #e2e8f0',
+                color: '#64748b',
+                fontWeight: '500',
+                fontSize: '14px',
+                gap: '8px',
               }}
-            ></div>
-            Admin
+            >
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  background: '#10b981',
+                  borderRadius: '50%',
+                }}
+              ></div>
+              Admin
+            </div>
           </div>
         </header>
 
@@ -369,7 +437,9 @@ const Dashboard = ({ user, onLogout }) => {
           <Routes>
             <Route path="/" element={<DashboardHome stats={stats} onRefresh={fetchStats} />} />
             <Route path="/requests" element={<ServiceRequests />} />
+            <Route path="/orders" element={<Orders />} /> {/* New route */}
             <Route path="/products" element={<Products />} />
+            <Route path="/revenue" element={<Revenue />} /> {/* New route */}
             <Route path="/users" element={<Users />} />
             <Route path="/notifications" element={<Notifications notifications={notifications} onRefresh={fetchNotifications} />} />
           </Routes>
