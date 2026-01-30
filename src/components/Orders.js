@@ -83,15 +83,25 @@ const Orders = () => {
     }
   };
 
-  const generateInvoice = async (orderId) => {
-    try {
-      const response = await ordersAPI.generateInvoice(orderId);
-      window.open(`http://localhost:8000${response.data.invoice_url}`, '_blank');
-    } catch (error) {
-      console.error('Error generating invoice:', error);
-      alert('Error generating invoice');
-    }
-  };
+// In your Orders component, modify the generateInvoice function:
+const generateInvoice = async (orderId) => {
+  try {
+    const response = await ordersAPI.generateInvoice(orderId);
+    
+    console.log('Invoice URL from backend:', response.data.invoice_url);
+    
+    // Get the base URL from the axios instance
+    const baseURL = api.defaults.baseURL;
+    const invoiceUrl = `${baseURL}${response.data.invoice_url}`;
+    
+    console.log('Full invoice URL:', invoiceUrl);
+    window.open(invoiceUrl, '_blank');
+    
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    alert('Error generating invoice');
+  }
+};
 
   const applyFilters = () => {
     setFilters(prev => ({ ...prev, page: 1 }));
