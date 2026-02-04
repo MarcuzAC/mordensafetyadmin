@@ -6,8 +6,8 @@ import ServiceRequests from './ServiceRequests';
 import Products from './Products';
 import Users from './Users';
 import Notifications from './Notifications';
-import Orders from './Orders'; // Import the new Orders component
-import Revenue from './Revenue'; // Import the new Revenue component
+import Orders from './Orders';
+import Revenue from './Revenue';
 
 const Dashboard = ({ user, onLogout }) => {
   const location = useLocation();
@@ -15,15 +15,15 @@ const Dashboard = ({ user, onLogout }) => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  // Updated menu items to include Orders and Revenue
+  // Menu items without emojis
   const menuItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/dashboard/requests', label: 'Service Requests', icon: '🔧' },
-    { path: '/dashboard/orders', label: 'Orders', icon: '📦' }, // New menu item
-    { path: '/dashboard/products', label: 'Products', icon: '🛍️' },
-    { path: '/dashboard/revenue', label: 'Revenue & Expenses', icon: '💰' }, // New menu item
-    { path: '/dashboard/users', label: 'Users', icon: '👥' },
-    { path: '/dashboard/notifications', label: 'Notifications', icon: '🔔' },
+    { path: '/dashboard', label: 'Dashboard' },
+    { path: '/dashboard/requests', label: 'Service Requests' },
+    { path: '/dashboard/orders', label: 'Orders' },
+    { path: '/dashboard/products', label: 'Products' },
+    { path: '/dashboard/revenue', label: 'Revenue & Expenses' },
+    { path: '/dashboard/users', label: 'Users' },
+    { path: '/dashboard/notifications', label: 'Notifications' },
   ];
 
   useEffect(() => {
@@ -112,6 +112,7 @@ const Dashboard = ({ user, onLogout }) => {
                 justifyContent: 'center',
                 fontWeight: '700',
                 fontSize: '18px',
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               MS
@@ -123,6 +124,7 @@ const Dashboard = ({ user, onLogout }) => {
                   fontSize: '20px',
                   fontWeight: '700',
                   letterSpacing: '0.3px',
+                  fontFamily: "'Poppins', sans-serif",
                 }}
               >
                 Modern Safety
@@ -133,6 +135,7 @@ const Dashboard = ({ user, onLogout }) => {
                   opacity: 0.85,
                   fontSize: '13px',
                   fontWeight: '500',
+                  fontFamily: "'Poppins', sans-serif",
                 }}
               >
                 Admin Panel
@@ -163,6 +166,7 @@ const Dashboard = ({ user, onLogout }) => {
                 fontSize: '15px',
                 fontWeight: '500',
                 transition: 'all 0.3s ease',
+                fontFamily: "'Poppins', sans-serif",
                 ...getActiveStyle(item.path),
               }}
               onMouseOver={(e) => {
@@ -179,16 +183,8 @@ const Dashboard = ({ user, onLogout }) => {
                 }
               }}
             >
-              <span
-                style={{
-                  marginRight: '12px',
-                  fontSize: '18px',
-                  width: '24px',
-                  textAlign: 'center',
-                }}
-              >
-                {item.icon}
-              </span>
+              {/* Removed icon/emoji span */}
+              <span style={{ marginRight: '12px', width: '24px' }}></span>
               {item.label}
               {item.label === 'Notifications' && unreadCount > 0 && (
                 <span
@@ -199,12 +195,12 @@ const Dashboard = ({ user, onLogout }) => {
                     fontSize: '11px',
                     fontWeight: '600',
                     marginLeft: 'auto',
+                    fontFamily: "'Poppins', sans-serif",
                   }}
                 >
                   {unreadCount}
                 </span>
               )}
-              {/* Show notification badge for Orders if there are pending orders */}
               {item.label === 'Orders' && stats?.counts?.pending_orders > 0 && (
                 <span
                   style={{
@@ -214,6 +210,7 @@ const Dashboard = ({ user, onLogout }) => {
                     fontSize: '11px',
                     fontWeight: '600',
                     marginLeft: 'auto',
+                    fontFamily: "'Poppins', sans-serif",
                   }}
                 >
                   {stats.counts.pending_orders}
@@ -249,6 +246,7 @@ const Dashboard = ({ user, onLogout }) => {
                 justifyContent: 'center',
                 fontWeight: '600',
                 fontSize: '16px',
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               {user?.full_name?.charAt(0) || 'A'}
@@ -259,6 +257,7 @@ const Dashboard = ({ user, onLogout }) => {
                   margin: 0,
                   fontWeight: '600',
                   fontSize: '14px',
+                  fontFamily: "'Poppins', sans-serif",
                 }}
               >
                 {user?.full_name}
@@ -269,6 +268,7 @@ const Dashboard = ({ user, onLogout }) => {
                   opacity: 0.8,
                   fontSize: '12px',
                   fontWeight: '500',
+                  fontFamily: "'Poppins', sans-serif",
                 }}
               >
                 {user?.role}
@@ -289,6 +289,7 @@ const Dashboard = ({ user, onLogout }) => {
               fontWeight: '500',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
+              fontFamily: "'Poppins', sans-serif",
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
@@ -299,7 +300,7 @@ const Dashboard = ({ user, onLogout }) => {
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            🚪 Sign Out
+            Sign Out
           </button>
         </div>
       </aside>
@@ -335,6 +336,7 @@ const Dashboard = ({ user, onLogout }) => {
                 color: '#1e3c72',
                 fontWeight: '700',
                 fontSize: '22px',
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               {menuItems.find((i) => i.path === location.pathname)?.label ||
@@ -345,6 +347,7 @@ const Dashboard = ({ user, onLogout }) => {
                 margin: '4px 0 0',
                 color: '#64748b',
                 fontSize: '14px',
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               Welcome back, {user?.full_name}
@@ -373,9 +376,9 @@ const Dashboard = ({ user, onLogout }) => {
                     fontWeight: '500',
                     fontSize: '14px',
                     gap: '6px',
+                    fontFamily: "'Poppins', sans-serif",
                   }}
                 >
-                  <span style={{ fontSize: '16px' }}>📦</span>
                   <span>{stats.counts?.pending_orders || 0} Pending Orders</span>
                 </div>
                 <div
@@ -390,9 +393,9 @@ const Dashboard = ({ user, onLogout }) => {
                     fontWeight: '500',
                     fontSize: '14px',
                     gap: '6px',
+                    fontFamily: "'Poppins', sans-serif",
                   }}
                 >
-                  <span style={{ fontSize: '16px' }}>🔧</span>
                   <span>{stats.counts?.pending_requests || 0} Pending Requests</span>
                 </div>
               </>
@@ -410,6 +413,7 @@ const Dashboard = ({ user, onLogout }) => {
                 fontWeight: '500',
                 fontSize: '14px',
                 gap: '8px',
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               <div
@@ -437,14 +441,20 @@ const Dashboard = ({ user, onLogout }) => {
           <Routes>
             <Route path="/" element={<DashboardHome stats={stats} onRefresh={fetchStats} />} />
             <Route path="/requests" element={<ServiceRequests />} />
-            <Route path="/orders" element={<Orders />} /> {/* New route */}
+            <Route path="/orders" element={<Orders />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/revenue" element={<Revenue />} /> {/* New route */}
+            <Route path="/revenue" element={<Revenue />} />
             <Route path="/users" element={<Users />} />
             <Route path="/notifications" element={<Notifications notifications={notifications} onRefresh={fetchNotifications} />} />
           </Routes>
         </div>
       </main>
+
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        `}
+      </style>
     </div>
   );
 };

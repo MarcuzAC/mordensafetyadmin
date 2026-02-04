@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const StatCard = ({ title, value, icon, color, subtitle, onClick }) => (
+const StatCard = ({ title, value, color, subtitle, onClick }) => (
   <div
     style={{
       background: 'white',
@@ -57,9 +57,10 @@ const StatCard = ({ title, value, icon, color, subtitle, onClick }) => (
           color: 'white',
           flexShrink: 0,
           boxShadow: `0 4px 10px ${color}40`,
+          fontFamily: "'Poppins', sans-serif",
         }}
       >
-        {icon}
+        {/* Icon removed */}
       </div>
       <div>
         <h3
@@ -70,6 +71,7 @@ const StatCard = ({ title, value, icon, color, subtitle, onClick }) => (
             fontWeight: '600',
             textTransform: 'uppercase',
             letterSpacing: '0.6px',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
           {title}
@@ -80,6 +82,7 @@ const StatCard = ({ title, value, icon, color, subtitle, onClick }) => (
             fontSize: '30px',
             fontWeight: '700',
             color: '#1e3c72',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
           {value}
@@ -91,6 +94,7 @@ const StatCard = ({ title, value, icon, color, subtitle, onClick }) => (
               fontSize: '13px',
               color: '#94a3b8',
               fontWeight: '500',
+              fontFamily: "'Poppins', sans-serif",
             }}
           >
             {subtitle}
@@ -108,6 +112,7 @@ const StatCard = ({ title, value, icon, color, subtitle, onClick }) => (
           fontSize: '12px',
           fontWeight: '600',
           opacity: 0.8,
+          fontFamily: "'Poppins', sans-serif",
         }}
       >
         Click to view →
@@ -138,6 +143,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
               color: '#1e3c72',
               fontSize: '30px',
               fontWeight: '700',
+              fontFamily: "'Poppins', sans-serif",
             }}
           >
             Dashboard Overview
@@ -148,6 +154,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
               color: '#64748b',
               fontSize: '15px',
               fontWeight: '500',
+              fontFamily: "'Poppins', sans-serif",
             }}
           >
             Welcome to Modern Safety Admin Panel
@@ -169,11 +176,12 @@ const DashboardHome = ({ stats, onRefresh }) => {
             alignItems: 'center',
             gap: '8px',
             boxShadow: '0 4px 10px rgba(30, 60, 114, 0.25)',
+            fontFamily: "'Poppins', sans-serif",
           }}
           onMouseOver={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
           onMouseOut={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
         >
-          🔄 Refresh Data
+          Refresh Data
         </button>
       </div>
 
@@ -185,12 +193,10 @@ const DashboardHome = ({ stats, onRefresh }) => {
             color: '#1e3c72',
             fontSize: '20px',
             fontWeight: '600',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
-          📊 Business Overview
+          Business Overview
         </h3>
         <div
           style={{
@@ -204,7 +210,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Service Requests"
             value={counts?.total_requests || 0}
-            icon="🔧"
             color="#3b82f6"
             subtitle={`${counts?.pending_requests || 0} pending`}
             onClick={() => window.location.href = '/dashboard/requests'}
@@ -214,7 +219,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Orders"
             value={counts?.total_orders || 0}
-            icon="📦"
             color="#10b981"
             subtitle={`${counts?.pending_orders || 0} pending`}
             onClick={() => window.location.href = '/dashboard/orders'}
@@ -224,7 +228,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Total Clients"
             value={counts?.total_clients || 0}
-            icon="👥"
             color="#8b5cf6"
             subtitle="Registered users"
           />
@@ -233,7 +236,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Products"
             value={counts?.total_products || 0}
-            icon="🛍️"
             color="#f59e0b"
             subtitle={`${counts?.low_stock_products || 0} low stock`}
             onClick={() => window.location.href = '/dashboard/products'}
@@ -249,12 +251,10 @@ const DashboardHome = ({ stats, onRefresh }) => {
             color: '#1e3c72',
             fontSize: '20px',
             fontWeight: '600',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
-          💰 Financial Performance
+          Financial Performance
         </h3>
         <div
           style={{
@@ -268,7 +268,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Total Revenue"
             value={`MK ${(financials?.total_revenue || 0).toLocaleString()}`}
-            icon="💰"
             color="#10b981"
             subtitle="All time revenue"
             onClick={() => window.location.href = '/dashboard/revenue'}
@@ -278,7 +277,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Order Revenue"
             value={`MK ${(financials?.order_revenue || 0).toLocaleString()}`}
-            icon="📦"
             color="#3b82f6"
             subtitle={`${counts?.order_count || 0} orders`}
           />
@@ -287,7 +285,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Service Revenue"
             value={`MK ${(financials?.service_revenue || 0).toLocaleString()}`}
-            icon="🔧"
             color="#8b5cf6"
             subtitle={`${counts?.service_count || 0} services`}
           />
@@ -296,7 +293,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Net Profit"
             value={`MK ${(financials?.net_profit || 0).toLocaleString()}`}
-            icon="📈"
             color={financials?.net_profit > 0 ? '#10b981' : '#ef4444'}
             subtitle={
               financials?.total_revenue ? 
@@ -315,12 +311,10 @@ const DashboardHome = ({ stats, onRefresh }) => {
             color: '#1e3c72',
             fontSize: '20px',
             fontWeight: '600',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
-          📊 Quick Stats
+          Quick Stats
         </h3>
         <div
           style={{
@@ -333,7 +327,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Expenses"
             value={`MK ${(financials?.total_expenses || 0).toLocaleString()}`}
-            icon="📉"
             color="#ef4444"
             subtitle={`${financials?.expense_count || 0} records`}
           />
@@ -345,7 +338,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
               Math.round(financials?.order_revenue / counts.order_count) : 
               '0'
             }`}
-            icon="📊"
             color="#f59e0b"
             subtitle="Average order value"
           />
@@ -354,7 +346,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Recent Orders"
             value={stats?.recent_orders?.length || 0}
-            icon="🆕"
             color="#8b5cf6"
             subtitle="Latest orders"
             onClick={() => window.location.href = '/dashboard/orders'}
@@ -364,7 +355,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
           <StatCard
             title="Recent Requests"
             value={stats?.recent_requests?.length || 0}
-            icon="🆕"
             color="#3b82f6"
             subtitle="Latest requests"
             onClick={() => window.location.href = '/dashboard/requests'}
@@ -388,9 +378,10 @@ const DashboardHome = ({ stats, onRefresh }) => {
             color: '#1e3c72',
             fontSize: '20px',
             fontWeight: '600',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
-          ⚡ Quick Actions
+          Quick Actions
         </h3>
         <div
           style={{
@@ -400,12 +391,12 @@ const DashboardHome = ({ stats, onRefresh }) => {
           }}
         >
           {[
-            { label: 'View Orders', icon: '📦', path: '/dashboard/orders' },
-            { label: 'Manage Requests', icon: '🔧', path: '/dashboard/requests' },
-            { label: 'Revenue Dashboard', icon: '💰', path: '/dashboard/revenue' },
-            { label: 'Manage Products', icon: '🛍️', path: '/dashboard/products' },
-            { label: 'User Management', icon: '👥', path: '/dashboard/users' },
-            { label: 'Check Notifications', icon: '🔔', path: '/dashboard/notifications' },
+            { label: 'View Orders', path: '/dashboard/orders' },
+            { label: 'Manage Requests', path: '/dashboard/requests' },
+            { label: 'Revenue Dashboard', path: '/dashboard/revenue' },
+            { label: 'Manage Products', path: '/dashboard/products' },
+            { label: 'User Management', path: '/dashboard/users' },
+            { label: 'Check Notifications', path: '/dashboard/notifications' },
           ].map((action, index) => (
             <Link
               key={index}
@@ -423,6 +414,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
                 fontSize: '14px',
                 border: '1px solid #e2e8f0',
                 transition: 'all 0.3s ease',
+                fontFamily: "'Poppins', sans-serif",
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.background = 'linear-gradient(135deg, #1e3c72, #2a5298)';
@@ -437,7 +429,6 @@ const DashboardHome = ({ stats, onRefresh }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <span style={{ fontSize: '18px' }}>{action.icon}</span>
               <span>{action.label}</span>
             </Link>
           ))}
@@ -470,12 +461,10 @@ const DashboardHome = ({ stats, onRefresh }) => {
                 color: '#1e3c72',
                 fontSize: '20px',
                 fontWeight: '600',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
-              📋 Recent Activity
+              Recent Activity
             </h3>
             <Link
               to="/dashboard/orders"
@@ -487,6 +476,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               View All →
@@ -509,6 +499,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
                   padding: '20px',
                   borderRadius: '12px',
                   border: '1px solid #e2e8f0',
+                  fontFamily: "'Poppins', sans-serif",
                 }}
               >
                 <div
@@ -531,9 +522,10 @@ const DashboardHome = ({ stats, onRefresh }) => {
                         justifyContent: 'center',
                         color: '#10b981',
                         fontSize: '18px',
+                        fontFamily: "'Poppins', sans-serif",
                       }}
                     >
-                      📦
+                      {/* Emoji removed */}
                     </div>
                     <div>
                       <div
@@ -541,6 +533,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
                           fontWeight: '600',
                           color: '#1e3c72',
                           fontSize: '15px',
+                          fontFamily: "'Poppins', sans-serif",
                         }}
                       >
                         Order #{order.order_number}
@@ -549,6 +542,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
                         style={{
                           color: '#64748b',
                           fontSize: '13px',
+                          fontFamily: "'Poppins', sans-serif",
                         }}
                       >
                         {new Date(order.created_at).toLocaleDateString()}
@@ -566,6 +560,7 @@ const DashboardHome = ({ stats, onRefresh }) => {
                       fontSize: '12px',
                       fontWeight: '600',
                       textTransform: 'capitalize',
+                      fontFamily: "'Poppins', sans-serif",
                     }}
                   >
                     {order.status}
@@ -579,14 +574,14 @@ const DashboardHome = ({ stats, onRefresh }) => {
                   }}
                 >
                   <div>
-                    <div style={{ color: '#64748b', fontSize: '13px' }}>Customer</div>
-                    <div style={{ fontWeight: '500', color: '#1e3c72', fontSize: '14px' }}>
+                    <div style={{ color: '#64748b', fontSize: '13px', fontFamily: "'Poppins', sans-serif" }}>Customer</div>
+                    <div style={{ fontWeight: '500', color: '#1e3c72', fontSize: '14px', fontFamily: "'Poppins', sans-serif" }}>
                       {order.client_name}
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ color: '#64748b', fontSize: '13px' }}>Amount</div>
-                    <div style={{ fontWeight: '700', color: '#1e3c72', fontSize: '16px' }}>
+                    <div style={{ color: '#64748b', fontSize: '13px', fontFamily: "'Poppins', sans-serif" }}>Amount</div>
+                    <div style={{ fontWeight: '700', color: '#1e3c72', fontSize: '16px', fontFamily: "'Poppins', sans-serif" }}>
                       MK {order.total_amount?.toLocaleString()}
                     </div>
                   </div>
