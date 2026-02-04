@@ -469,7 +469,7 @@ const ProductModal = ({ product, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     name: product?.name || '',
     description: product?.description || '',
-    category: product?.category || 'fire_extinguishers',
+    category: product?.category || 'cctv_systems',
     price: product?.price || '',
     stock_quantity: product?.stock_quantity || 0,
     specifications: product?.specifications ? JSON.stringify(product.specifications, null, 2) : '{\n  \n}',
@@ -863,9 +863,10 @@ const ProductModal = ({ product, onClose, onSave }) => {
                     fontSize: '14px'
                   }}
                 >
-                  <option value="fire_extinguishers">Fire Extinguishers</option>
-                  <option value="safety_equipment">Safety Equipment</option>
-                  <option value="maintenance_kits">Maintenance Kits</option>
+                  <option value="cctv_systems">CCTV Systems</option>
+                  <option value="alarm_systems">Alarm Systems</option>
+                  <option value="access_control">Access Control</option>
+                  <option value="network_security">Network Security</option>
                   <option value="other">Other</option>
                 </select>
               </div>
@@ -959,7 +960,7 @@ const ProductModal = ({ product, onClose, onSave }) => {
                 value={formData.specifications}
                 onChange={(e) => setFormData({ ...formData, specifications: e.target.value })}
                 rows="4"
-                placeholder='Enter specifications as JSON, e.g.: {"weight": "6kg", "fire_class": "A, B, C", "material": "Steel"}'
+                placeholder='Enter specifications as JSON, e.g.: {"resolution": "4K", "storage": "1TB HDD", "night_vision": "30m", "connectivity": "WiFi, Ethernet"}'
                 style={{
                   width: '100%',
                   padding: '10px 12px',
